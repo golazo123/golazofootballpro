@@ -1,38 +1,945 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Welcome Page</title>
-  <style>
-    body {
-      background-color: #f0f8ff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-align: center;
-      padding: 50px;
-    }
-    h1 {
-      color: #333366;
-    }
-    p {
-      font-size: 1.2em;
-      color: #555555;
-    }
-    .container {
-      margin: auto;
-      max-width: 600px;
-      background-color: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-      padding: 30px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLAZO - Football Pro - Ultimate Football Companion App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #dc2626;
+            --accent: #0ea5e9;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --success: #10b981;
+            --telegram: #0088cc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #152c6e;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #c42121;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2);
+        }
+        
+        .btn-telegram {
+            background-color: var(--telegram);
+            color: white;
+        }
+        
+        .btn-telegram:hover {
+            background-color: #0077b5;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 136, 204, 0.2);
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Home Section */
+        #home {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            color: white;
+            padding: 180px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .home-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .home-text {
+            flex: 1;
+            padding-right: 50px;
+        }
+        
+        .home-text h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .home-text p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        
+        .app-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .app-buttons .btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 180px;
+        }
+        
+        .phone-mockup {
+            flex: 1;
+            position: relative;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+        
+        .phone-mockup img {
+            width: 100%;
+            display: block;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 8px solid #0f172a;
+        }
+        
+        /* Telegram Join Section */
+        #telegram-join {
+            background: linear-gradient(135deg, #0088cc 0%, #006da3 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .telegram-join-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .telegram-join-content h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .telegram-join-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .telegram-icon-large {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .telegram-benefits {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .telegram-benefit {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            width: 180px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .telegram-benefit i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        /* About Section */
+        #about {
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            border-radius: 15px;
+            background-color: #f8fafc;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .feature-card p {
+            color: var(--gray);
+        }
+        
+        /* Screens Section */
+        #screens {
+            background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+        }
+        
+        .screens-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .screens-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 20px;
+            padding: 20px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .screens-slider::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .screen-item {
+            scroll-snap-align: start;
+            flex: 0 0 auto;
+            width: 250px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .screen-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Contact Section */
+        #contact {
+            background-color: white;
+        }
+        
+        .contact-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .contact-info {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        
+        .contact-info h3 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .contact-info p {
+            margin-bottom: 30px;
+            color: var(--gray);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .telegram-contact {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .telegram-icon {
+            font-size: 80px;
+            color: var(--telegram);
+            margin-bottom: 10px;
+        }
+        
+        .telegram-handle {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        .telegram-description {
+            font-size: 18px;
+            color: var(--gray);
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+            padding-right: 20px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #334155;
+            color: white;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--telegram);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .home-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .home-text {
+                padding-right: 0;
+                margin-bottom: 50px;
+            }
+            
+            .app-buttons {
+                justify-content: center;
+            }
+            
+            .contact-container {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                background-color: white;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.4s ease;
+            }
+            
+            .nav-links.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .home-text h1 {
+                font-size: 36px;
+            }
+            
+            .section-title h2 {
+                font-size: 30px;
+            }
+            
+            .telegram-benefits {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .telegram-benefit {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .app-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+            
+            .telegram-icon {
+                font-size: 60px;
+            }
+            
+            .telegram-icon-large {
+                font-size: 60px;
+            }
+            
+            .telegram-handle {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to My Website!</h1>
-    <p>Thanks for stopping by. Explore and enjoy your stay!</p>
-  </div>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <i class="fas fa-futbol"></i>
+                    GOLAZO - Football Pro
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#telegram-join">Join Telegram</a></li>
+                    <li><a href="#about">Features</a></li>
+                    <li><a href="#screens">Screens</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home">
+        <div class="container">
+            <div class="home-content">
+                <div class="home-text">
+                    <h1>Experience Football Like Never Before</h1>
+                    <p>GOLAZO - Football Pro brings you real-time scores, in-depth statistics, personalized notifications, and everything you need to follow the beautiful game like a true professional.</p>
+                    <div class="app-buttons">
+                        <a href="https://streaminn.de/futgenixfootballproVersion3.apk" class="btn btn-primary">
+                            <i class="fab fa-google-play"></i>
+                            Download Direct APK
+                        </a>
+                    </div>
+                </div>
+                <div class="phone-mockup">
+                    <img src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&w=350" alt="GOLAZO - Football Pro App">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Telegram Join Section -->
+    <section id="telegram-join">
+        <div class="container">
+            <div class="telegram-join-content">
+                <i class="fab fa-telegram telegram-icon-large"></i>
+                <h2>Join Our Telegram Channel</h2>
+                <p>Stay updated with the latest news, updates, and exclusive content about GOLAZO - Football Pro. Join our growing community of football enthusiasts!</p>
+                
+                <div class="telegram-benefits">
+                    <div class="telegram-benefit">
+                        <i class="fas fa-bell"></i>
+                        <h4>Latest Updates</h4>
+                    </div>
+                    <div class="telegram-benefit">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h4>App News</h4>
+                    </div>
+                    <div class="telegram-benefit">
+                        <i class="fas fa-users"></i>
+                        <h4>Community</h4>
+                    </div>
+                    <div class="telegram-benefit">
+                        <i class="fas fa-star"></i>
+                        <h4>Exclusive Content</h4>
+                    </div>
+                </div>
+                
+                <a href="https://t.me/futgenix" class="btn btn-telegram" target="_blank" id="joinTelegramBtn">
+                    <i class="fab fa-telegram"></i>
+                    Join Our Telegram Channel
+                </a>
+                <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">Join 5,000+ football fans already in our community!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Make Every Match Exciting</h2>
+                <p>Discover all the tools you need to follow football like a pro.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h3>Live Matches</h3>
+                    <p>Stay updated with real-time scores and match events from leagues around the world.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Fixtures</h3>
+                    <p>Get the latest schedule of upcoming matches and plan your game day in advance.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Match Details</h3>
+                    <p>Dive deep into line-ups, statistics, and live commentary for every match.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Notifications</h3>
+                    <p>Never miss an update with personalized match alerts and breaking news.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Player Stats</h3>
+                    <p>Track player performances with in-depth stats and analysis throughout the season.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>League Standings</h3>
+                    <p>Keep an eye on your favorite teams' positions in the league table with live updates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screens Section -->
+    <section id="screens">
+        <div class="container">
+            <div class="section-title">
+                <h2>App Screenshots</h2>
+                <p>Preview of the GOLAZO - Football Pro app interface and features</p>
+            </div>
+            
+            <div class="screens-container">
+                <div class="screens-slider">
+                    <div class="screen-item">
+                        <img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=250" alt="Live Scores Screen">
+                    </div>
+                    <div class="screen-item">
+                        <img src="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=250" alt="Match Details Screen">
+                    </div>
+                    <div class="screen-item">
+                        <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=250" alt="Team Stats Screen">
+                    </div>
+                    <div class="screen-item">
+                        <img src="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=250" alt="Player Profile Screen">
+                    </div>
+                    <div class="screen-item">
+                        <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&w=250" alt="League Standings Screen">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Have questions or feedback? Reach out to us on Telegram!</p>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <p>Whether you have a question, feedback, or a collaboration proposal, our team is ready to assist you. We're committed to providing the best football experience for our users.</p>
+                    
+                    <div class="telegram-contact">
+                        <i class="fab fa-telegram telegram-icon"></i>
+                        <div class="telegram-handle">@FootballProSupport</div>
+                        <p class="telegram-description">Contact us directly on Telegram for the fastest response. We're available to help with any questions about the app, technical support, or feedback.</p>
+                        <a href="https://t.me/futgenix" class="btn btn-telegram" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                            Message Us on Telegram
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>GOLAZO - Football Pro</h3>
+                    <p>The ultimate companion for football fans. Stay connected to the game you love with real-time updates, stats, and personalized content.</p>
+                    <div class="social-icons">
+                        <a href="https://t.me/futgenix" target="_blank" id="footerTelegramBtn"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#telegram-join">Join Telegram</a></li>
+                        <li><a href="#about">Features</a></li>
+                        <li><a href="#screens">Screenshots</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Download</h3>
+                    <ul>
+                        <li><a href="https://streaminn.de/futgenixfootballproVersion3.apk"><i class="fab fa-google-play"></i> Direct APK</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="https://t.me/futgenix" target="_blank">Contact Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 GOLAZO - Football Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Telegram channel join tracking
+        const joinTelegramBtn = document.getElementById('joinTelegramBtn');
+        const footerTelegramBtn = document.getElementById('footerTelegramBtn');
+        
+        // Function to track Telegram channel joins
+        function trackTelegramJoin() {
+            // You can integrate with analytics here
+            console.log('User clicked to join Telegram channel');
+            
+            // Example: Send data to Google Analytics
+            // gtag('event', 'telegram_join', {
+            //     'event_category': 'engagement',
+            //     'event_label': 'Telegram Channel Join'
+            // });
+            
+            // Open Telegram in a new tab (already handled by target="_blank")
+            // The actual joining happens on Telegram's side
+        }
+        
+        // Add event listeners to Telegram join buttons
+        if (joinTelegramBtn) {
+            joinTelegramBtn.addEventListener('click', trackTelegramJoin);
+        }
+        
+        if (footerTelegramBtn) {
+            footerTelegramBtn.addEventListener('click', trackTelegramJoin);
+        }
+        
+        // Optional: Show a confirmation message when returning from Telegram
+        window.addEventListener('focus', function() {
+            // Check if user just returned from Telegram
+            // This is a simple implementation - you might want to use more sophisticated tracking
+            if (sessionStorage.getItem('telegramRedirect')) {
+                sessionStorage.removeItem('telegramRedirect');
+                // You could show a toast notification here
+                console.log('Welcome back from Telegram!');
+            }
+        });
+        
+        // Set a flag when redirecting to Telegram
+        document.querySelectorAll('a[href*="t.me"]').forEach(link => {
+            link.addEventListener('click', function() {
+                sessionStorage.setItem('telegramRedirect', 'true');
+            });
+        });
+    </script>
 </body>
 </html>
