@@ -8,8 +8,9 @@ header("Content-Type: application/json; charset=UTF-8");
 */
 
 // GitHub raw URLs
-$EVENTS_URL  = "https://raw.githubusercontent.com/golazofootballpro/events.json";
-$EVENTC_URL  = "https://raw.githubusercontent.com/golazofootballpro/eventc.json";
+//https://raw.githubusercontent.com/{user}/{repo}/{branch}/{file}
+$EVENTS_URL  = "https://raw.githubusercontent.com/golazo123/golazofootballpro/events.json";
+$EVENTC_URL  = "https://raw.githubusercontent.com/golazo123/golazofootballpro/eventc.json";
 
 // City / Country rules (admin controlled)
 // true  = allow normal events
