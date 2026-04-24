@@ -7,19 +7,19 @@ header("Content-Type: application/json; charset=UTF-8");
 |--------------------------------------------------------------------------
 */
 
-// GitHub raw URLs
-//https://raw.githubusercontent.com/{user}/{repo}/{branch}/{file}
-$EVENTS_URL  = "https://raw.githubusercontent.com/golazo123/golazofootballpro/events.json";
-$EVENTC_URL  = "https://raw.githubusercontent.com/golazo123/golazofootballpro/eventc.json";
+$EVENTS_URL  = "https://raw.githubusercontent.com/golazo123/golazofootballpro/main/events.json";
+$EVENTC_URL  = "https://raw.githubusercontent.com/golazo123/golazofootballpro/main/eventc.json";
 
-// City / Country rules (admin controlled)
-// true  = allow normal events
-// false = blocked → eventc.json
+/*
+|--------------------------------------------------------------------------
+| RULES (CITY / COUNTRY)
+|--------------------------------------------------------------------------
+*/
 $RULES = [
     'pk' => [
         'default' => true,
         'cities' => [
-            'lahore'   => false,
+            'lahore' => false,
             'karachi' => false
         ]
     ],
@@ -30,37 +30,56 @@ $RULES = [
 
 /*
 |--------------------------------------------------------------------------
-| IP DETECTION
+| GET IP
 |--------------------------------------------------------------------------
 */
-function getUserIP() {
-    if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-        return $_SERVER['HTTP_CF_CONNECTING_IP']; // Cloudflare
-    }
-    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
-    }
+function getIP() {
+    if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) return $_SERVER['HTTP_CF_CONNECTING_IP'];
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
     return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 }
 
 /*
 |--------------------------------------------------------------------------
-| GEO LOOKUP (IP → CITY)
+| GEO LOOKUP
 |--------------------------------------------------------------------------
-| Replace with MaxMind / IP2Location in production
 */
-function getGeoByIP($ip) {
+function getGeo($ip) {
     $url = "http://ip-api.com/json/$ip?fields=status,countryCode,city";
-    $res = @file_get_contents($url);
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+
+    $res = curl_exec($ch);
+    curl_close($ch);
+
     if (!$res) return null;
 
     $json = json_decode($res, true);
-    if ($json['status'] !== 'success') return null;
+    if (!$json || $json['status'] !== 'success') return null;
 
     return [
         'country' => strtolower($json['countryCode']),
-        'city'    => strtolower($json['city'])
+        'city' => strtolower($json['city'])
     ];
+}
+
+/*
+|--------------------------------------------------------------------------
+| FETCH URL
+|--------------------------------------------------------------------------
+*/
+function fetch($url) {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+    $data = curl_exec($ch);
+    curl_close($ch);
+
+    return $data;
 }
 
 /*
@@ -68,38 +87,40 @@ function getGeoByIP($ip) {
 | MAIN LOGIC
 |--------------------------------------------------------------------------
 */
-$ip  = getUserIP();
-$geo = getGeoByIP($ip);
+$ip = getIP();
+$geo = getGeo($ip);
 
-// Default: allow normal events
-$allowNormal = true;
+$allow = true;
 
 if ($geo) {
     $country = $geo['country'];
-    $city    = $geo['city'];
+    $city = $geo['city'];
 
     if (isset($RULES[$country])) {
-        $allowNormal = $RULES[$country]['default'];
+        $allow = $RULES[$country]['default'];
 
         if (isset($RULES[$country]['cities'][$city])) {
-            $allowNormal = $RULES[$country]['cities'][$city];
+            $allow = $RULES[$country]['cities'][$city];
         }
     }
 }
 
-// Decide which JSON to serve
-$jsonUrl = $allowNormal ? $EVENTS_URL : $EVENTC_URL;
+$url = $allow ? $EVENTS_URL : $EVENTC_URL;
+$json = fetch($url);
 
-// Fetch and return JSON
-$data = @file_get_contents($jsonUrl);
-
-if ($data === false) {
-    http_response_code(500);
+if (!$json) {
     echo json_encode([
-        "error" => true,
-        "message" => "Unable to load events"
+        "data" => base64_encode(json_encode([]))
     ]);
     exit;
 }
 
-echo $data;
+/*
+|--------------------------------------------------------------------------
+| WRAP FOR ANDROID APP (IMPORTANT PART)
+|--------------------------------------------------------------------------
+*/
+echo json_encode([
+    "data" => base64_encode($json)
+]);
+?>
